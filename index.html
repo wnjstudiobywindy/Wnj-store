@@ -340,7 +340,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 .info-tip{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);padding:14px 16px;font-size:12px;color:var(--m);line-height:1.8;margin-top:12px;}
 .info-tip strong{color:var(--gold);}
 
-/* ===== ADMIN TRIGGER BUTTON ===== */
+
 .admin-trigger{
   position:fixed;bottom:22px;left:22px;z-index:600;
   background:var(--k3);border:1px solid rgba(201,168,76,.25);
@@ -570,13 +570,13 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 <!-- NAVBAR -->
 <nav>
   <div class="nav-main">
-    <a href="#" class="nav-logo">WNJ STUDIO<small>Premium Digital Store</small></a>
+    <a href="#" class="nav-logo" onclick="secretTap()">WNJ STUDIO<small>Premium Digital Store</small></a>
     <div class="nav-search">
       <input type="text" id="searchInput" placeholder="Cari produk premium..." oninput="searchProducts()">
       <button onclick="searchProducts()">🔍</button>
     </div>
     <div class="nav-icons">
-      <button class="nic" onclick="openAdmin()"><span class="ico">⚙️</span>Admin</button>
+      
       <button class="nic"><span class="ico">🤍</span>Wishlist</button>
       <button class="nic" onclick="openCart()" style="position:relative;">
         <span class="ico">🛍️</span>Keranjang
@@ -747,7 +747,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 
 <a id="waFloat" href="#" target="_blank" class="wa-fl">💬</a>
 <button class="bktop" id="bktop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-<button class="admin-trigger" onclick="openAdmin()">⚙️ Admin</button>
+
 
 <!-- ===== LOGIN MODAL ===== -->
 <div id="loginModal" style="position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;">
@@ -957,6 +957,20 @@ function initScrollReveal(){
     });
   },100);
 }
+
+/* ====== SECRET ADMIN ACCESS ====== */
+// Ketuk logo WNJ 5x untuk buka admin (di HP)
+// Atau tekan Ctrl+Shift+W di keyboard (laptop)
+let tapCount=0,tapTimer=null;
+function secretTap(){
+  tapCount++;
+  if(tapTimer) clearTimeout(tapTimer);
+  tapTimer=setTimeout(()=>tapCount=0,2000);
+  if(tapCount>=5){ tapCount=0; openAdmin(); }
+}
+document.addEventListener("keydown",function(e){
+  if(e.ctrlKey&&e.shiftKey&&e.key==="W"){ e.preventDefault(); openAdmin(); }
+});
 
 /* ====== ADMIN ====== */
 let loggedIn=false;
