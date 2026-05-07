@@ -143,6 +143,8 @@ nav{position:sticky;top:0;z-index:400;background:rgba(6,6,6,.97);backdrop-filter
 .pc-img{width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--k4),var(--k2));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .pc-emo{font-size:68px;filter:drop-shadow(0 0 14px rgba(201,168,76,.18));transition:transform .5s,filter .5s;}
 .pc:hover .pc-emo{transform:scale(1.12);filter:drop-shadow(0 0 26px rgba(201,168,76,.45));}
+.pc-photo{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.pc:hover .pc-photo{transform:scale(1.06);}
 .pc-ov{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .pc:hover .pc-ov{opacity:1;}
 .pc-wa{background:var(--wa);color:#fff;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;transform:translateY(8px);transition:transform .3s;}
@@ -494,7 +496,13 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
           </div>
         </div>
         <div class="ap-fg">
-          <label class="ap-lbl">Emoji / Icon Produk</label>
+          <label class="ap-lbl">📸 Foto Produk (Opsional)</label>
+          <input class="ap-in" id="f_photo" placeholder="Paste link Google Drive / link foto di sini..." oninput="previewPhoto()">
+          <div style="font-size:10px;color:var(--m);margin-top:5px;line-height:1.6;">💡 Cara dapat link Google Drive: Upload foto → Klik kanan → <strong style="color:var(--gold)">Bagikan → Salin Link</strong><br>Kosongkan jika mau pakai emoji saja</div>
+          <div id="photoPreview" style="margin-top:10px;display:none;"><img id="previewImg" style="width:100px;height:100px;object-fit:cover;border:1px solid rgba(201,168,76,0.3);" alt="preview"><div style="font-size:10px;color:var(--green);margin-top:4px;">✅ Foto berhasil dimuat</div></div>
+        </div>
+        <div class="ap-fg">
+          <label class="ap-lbl">Emoji / Icon Produk (jika tanpa foto)</label>
           <div class="emoji-row" id="emojiRow"></div>
           <input type="hidden" id="f_emoji" value="📦">
         </div>
@@ -533,14 +541,46 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
     <!-- SETTINGS -->
     <div class="ap-page" id="ap-set">
       <div class="ap-sec-ttl">⚙️ <em>Pengaturan</em></div>
+
+      <div class="ap-setting-block">
+        <h3>🏪 Nama & Info Toko</h3>
+        <div class="ap-row">
+          <div class="ap-fg"><label class="ap-lbl">Nama Toko</label><input class="ap-in" id="s_name" placeholder="WNJ STUDIO"></div>
+          <div class="ap-fg"><label class="ap-lbl">Tagline Toko</label><input class="ap-in" id="s_tagline" placeholder="Premium Digital Store"></div>
+        </div>
+        <div class="ap-btns" style="margin-top:10px;"><button class="ab-save" onclick="saveStoreInfo()">💾 Simpan</button></div>
+      </div>
+
+      <div class="ap-setting-block">
+        <h3>📢 Teks Marquee Berjalan</h3>
+        <div class="ap-fg"><label class="ap-lbl">Teks (pisahkan dengan ✦)</label><input class="ap-in" id="s_marquee" placeholder="Produk A ✦ Produk B ✦ Produk C"></div>
+        <div class="ap-btns" style="margin-top:10px;"><button class="ab-save" onclick="saveMarquee()">💾 Simpan</button></div>
+      </div>
+
       <div class="ap-setting-block">
         <h3>💬 Nomor WhatsApp</h3>
         <div class="wa-row">
           <input class="ap-in" id="waNum" placeholder="628xxxxxxxxxx (tanpa + atau spasi)">
           <button class="ab-save" onclick="saveWA()" style="padding:11px 20px;">💾 Simpan</button>
         </div>
-        <div class="info-tip">Format: <strong>628xxxxxxxxxx</strong> — Semua pesanan akan dikirim ke nomor ini via WhatsApp.</div>
+        <div class="info-tip">Format: <strong>628xxxxxxxxxx</strong> — Semua pesanan akan dikirim ke nomor ini.</div>
       </div>
+
+      <div class="ap-setting-block">
+        <h3>📱 Link Sosial Media</h3>
+        <div class="ap-row">
+          <div class="ap-fg"><label class="ap-lbl">📸 Instagram</label><input class="ap-in" id="s_ig" placeholder="https://instagram.com/namakamu"></div>
+          <div class="ap-fg"><label class="ap-lbl">🎵 TikTok</label><input class="ap-in" id="s_tt" placeholder="https://tiktok.com/@namakamu"></div>
+        </div>
+        <div class="ap-btns" style="margin-top:10px;"><button class="ab-save" onclick="saveSosmed()">💾 Simpan</button></div>
+      </div>
+
+      <div class="ap-setting-block">
+        <h3>⭐ Kelola Testimoni</h3>
+        <div id="testiAdmin"></div>
+        <button class="ab-save" onclick="addTesti()" style="margin-top:10px;">➕ Tambah Testimoni</button>
+      </div>
+
       <div class="ap-setting-block">
         <h3>🔐 Ganti Password Admin</h3>
         <div class="ap-row">
@@ -570,7 +610,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 <!-- NAVBAR -->
 <nav>
   <div class="nav-main">
-    <a href="#" class="nav-logo" onclick="secretTap()">WNJ STUDIO<small>Premium Digital Store</small></a>
+    <a href="#" class="nav-logo" onclick="secretTap()"><span id="storeName">WNJ STUDIO</span><small id="storeTagline">Premium Digital Store</small></a>
     <div class="nav-search">
       <input type="text" id="searchInput" placeholder="Cari produk premium..." oninput="searchProducts()">
       <button onclick="searchProducts()">🔍</button>
@@ -637,10 +677,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 </section>
 
 <!-- MARQUEE -->
-<div class="mq"><div class="mq-in">
-  <div class="mq-i">Workbook Premium <span>✦</span> E-Book Eksklusif <span>✦</span> Edukasi Anak <span>✦</span> Jasa Web <span>✦</span> Wedding Invitation <span>✦</span> Jasa Gem 💎 <span>✦</span> Prompt Interior <span>✦</span> Prompt Fashion Muslimah <span>✦</span></div>
-  <div class="mq-i">Workbook Premium <span>✦</span> E-Book Eksklusif <span>✦</span> Edukasi Anak <span>✦</span> Jasa Web <span>✦</span> Wedding Invitation <span>✦</span> Jasa Gem 💎 <span>✦</span> Prompt Interior <span>✦</span> Prompt Fashion Muslimah <span>✦</span></div>
-</div></div>
+<div class="mq"><div class="mq-in" id="mqInner"></div></div>
 
 <!-- STATS -->
 <div class="stats"><div class="stats-in">
@@ -714,7 +751,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
   <div class="con">
     <div class="sec-lbl">Review Pembeli</div>
     <div class="sec-ttl">Kata Mereka <em>Tentang WNJ Studio</em></div>
-    <div class="testi-g">
+    <div class="testi-g" id="testiGrid">
       <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Wedding invitation-nya cantik banget, tamunya pada kaget dan suka! High class banget tampilannya, worth it banget! Seller responsif dan fast respon. Recommended 100%!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">👰</div><div><div class="testi-nm">Farah Nabila</div><div class="testi-pr">Wedding Invitation Royal Gold</div></div></div></div>
       <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Prompt interior-nya lengkap dan hasilnya keren banget! Langsung bisa buat konten IG estetik. Harganya murah tapi kualitasnya premium. Udah beli 3x disini!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">🏡</div><div><div class="testi-nm">Rinda Ayu</div><div class="testi-pr">1000+ Prompt Interior Premium</div></div></div></div>
       <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Workbook-nya bagus banget, layout premium dan materinya lengkap. Anak-anak suka banget sama flashcard hijaiyah-nya juga. Seller WNJ Studio memang the best!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">🤍</div><div><div class="testi-nm">Ummu Fathiyah</div><div class="testi-pr">Workbook + Edukasi Anak Premium</div></div></div></div>
@@ -732,13 +769,13 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 <!-- FOOTER -->
 <footer>
   <div class="ft-g">
-    <div><span class="ft-logo">WNJ STUDIO</span><div class="ft-tag">Premium Digital Store</div><p class="ft-desc">Toko produk digital premium terpercaya. Workbook, e-book, edukasi anak, wedding invitation, jasa web, gem, dan prompt AI terbaik.</p><div class="ft-soc"><a href="#" class="soc">📸</a><a href="#" class="soc">📘</a><a id="waFt" href="#" class="soc" target="_blank">💬</a><a href="#" class="soc">🎵</a></div></div>
+    <div><span class="ft-logo">WNJ STUDIO</span><div class="ft-tag">Premium Digital Store</div><p class="ft-desc">Toko produk digital premium terpercaya. Workbook, e-book, edukasi anak, wedding invitation, jasa web, gem, dan prompt AI terbaik.</p><div class="ft-soc"><a href="#" id="igLink" class="soc" target="_blank">📸</a><a href="#" id="fbLink" class="soc" target="_blank">📘</a><a id="waFt" href="#" class="soc" target="_blank">💬</a><a href="#" id="ttLink" class="soc" target="_blank">🎵</a></div></div>
     <div class="ft-col"><h4>Produk</h4><ul><li><a href="#sec-Workbook">Workbook Premium</a></li><li><a href="#sec-E-Book">E-Book Eksklusif</a></li><li><a href="#sec-Edukasi Anak">Edukasi Anak</a></li><li><a href="#sec-Wedding">Wedding Invitation</a></li><li><a href="#sec-Jasa Gem">Jasa Gem 💎</a></li><li><a href="#sec-Prompt AI">Prompt AI</a></li></ul></div>
     <div class="ft-col"><h4>Info</h4><ul><li><a href="#">Cara Pembelian</a></li><li><a href="#">Kebijakan Refund</a></li><li><a href="#">Syarat & Ketentuan</a></li><li><a href="#">FAQ</a></li></ul></div>
     <div class="ft-col"><h4>Kontak</h4><ul><li><a id="waFtLink" href="#" target="_blank">💬 WhatsApp Admin</a></li><li><a href="#">📸 Instagram</a></li><li><a href="#">🎵 TikTok Shop</a></li></ul></div>
   </div>
   <div class="ft-bot">
-    <p>© 2025 <span>WNJ STUDIO</span>. Semua hak dilindungi. Made with 🤍</p>
+    <p>© 2026 <span id="storeName2">WNJ STUDIO</span>. Semua hak dilindungi. Made with 🤍</p>
     <div class="pays"><span class="pay">DANA</span><span class="pay">OVO</span><span class="pay">GoPay</span><span class="pay">BCA</span><span class="pay">Mandiri</span><span class="pay">BSI</span></div>
   </div>
 </footer>
@@ -829,9 +866,23 @@ function setWALinks(){
 }
 
 /* ====== STORE INIT ====== */
+function applyStoreSettings(){
+  const name=getSetting('name','WNJ STUDIO');
+  const tagline=getSetting('tagline','Premium Digital Store');
+  document.querySelectorAll('#storeName,#storeName2').forEach(el=>{if(el)el.textContent=name;});
+  const tEl=document.getElementById('storeTagline'); if(tEl) tEl.textContent=tagline;
+  document.title=name+' — Premium Digital Store';
+  const ig=getSetting('ig',''); const tt=getSetting('tt','');
+  const igEl=document.getElementById('igLink'); if(igEl&&ig) igEl.href=ig;
+  const ttEl=document.getElementById('ttLink'); if(ttEl&&tt) ttEl.href=tt;
+}
+
 function initStore(){
   buildDots();
   setWALinks();
+  applyStoreSettings();
+  renderMarquee();
+  renderTesti();
   renderFlash();
   renderCatSections();
   updateStatProd();
@@ -855,10 +906,13 @@ function card(p, showProg=false){
   const discHtml=showProg&&p.disc?`<div class="disc-tag">-${p.disc}%</div>`:'';
   const progHtml=showProg?`<div class="fp-prog"><div class="fp-txt">Terjual ${p.prog}%</div><div class="fp-bar"><div class="fp-fill" style="width:${p.prog}%"></div></div></div>`:'';
   const oldHtml=p.old?`<div class="pc-old">Rp ${p.old.toLocaleString('id-ID')}</div>`:'';
+  const imgHtml = p.photo
+    ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" class="pc-photo">`
+    : `<div class="pc-emo">${p.emoji}</div>`;
   return `<div class="pc">
     ${bdgHtml}${discHtml}
     <div class="pc-img">
-      <div class="pc-emo">${p.emoji}</div>
+      ${imgHtml}
       <div class="pc-ov"><button class="pc-wa" onclick="window.open('https://wa.me/${wa}?text=${waMsg}','_blank')">💬 Pesan via WA</button></div>
     </div>
     <div class="pc-body">
@@ -1035,7 +1089,7 @@ function editProd(id){
   document.getElementById('f_old').value=p.old||'';
   document.getElementById('f_stars').value=p.stars;
   document.getElementById('f_rev').value=p.rev;
-  document.getElementById('f_emoji').value=p.emoji;
+  document.getElementById('f_emoji').value=p.emoji; document.getElementById('f_photo').value=p.photo||''; if(p.photo){document.getElementById('previewImg').src=p.photo;document.getElementById('photoPreview').style.display='block';}else{document.getElementById('photoPreview').style.display='none';}
   document.getElementById('f_flash').checked=p.flash;
   document.getElementById('f_active').checked=p.active;
   document.getElementById('f_disc').value=p.disc||'';
@@ -1048,6 +1102,25 @@ function editProd(id){
 function delProd(id){ if(!confirm('Hapus produk ini?')) return; saveProds(getProds().filter(p=>p.id!==id)); renderApList(); showToast('🗑 Produk dihapus'); }
 
 /* SAVE */
+function convertGDrive(url){
+  // Convert Google Drive share link to direct image link
+  const m1=url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(m1) return `https://drive.google.com/thumbnail?id=${m1[1]}&sz=w400`;
+  const m2=url.match(/id=([^&]+)/);
+  if(m2) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w400`;
+  return url; // return as-is if not gdrive
+}
+
+function previewPhoto(){
+  const raw=document.getElementById('f_photo').value.trim();
+  if(!raw){document.getElementById('photoPreview').style.display='none';return;}
+  const url=convertGDrive(raw);
+  const img=document.getElementById('previewImg');
+  img.onload=()=>document.getElementById('photoPreview').style.display='block';
+  img.onerror=()=>document.getElementById('photoPreview').style.display='none';
+  img.src=url;
+}
+
 function saveProduct(){
   const name=document.getElementById('f_name').value.trim();
   const price=parseInt(document.getElementById('f_price').value);
@@ -1055,14 +1128,14 @@ function saveProduct(){
   if(!price){ showToast('⚠️ Harga wajib diisi!'); return; }
   const flash=document.getElementById('f_flash').checked;
   const editId=document.getElementById('f_editId').value;
-  const obj={name,cat:document.getElementById('f_cat').value,emoji:document.getElementById('f_emoji').value||'📦',price,old:parseInt(document.getElementById('f_old').value)||0,badge:document.getElementById('f_badge').value,stars:document.getElementById('f_stars').value,rev:document.getElementById('f_rev').value||'0',flash,disc:flash?parseInt(document.getElementById('f_disc').value)||0:0,prog:flash?parseInt(document.getElementById('f_prog').value)||0:0,active:document.getElementById('f_active').checked};
+  const rawPhoto=document.getElementById('f_photo').value.trim(); const photo=rawPhoto?convertGDrive(rawPhoto):''; const obj={name,cat:document.getElementById('f_cat').value,emoji:document.getElementById('f_emoji').value||'📦',photo,price,old:parseInt(document.getElementById('f_old').value)||0,badge:document.getElementById('f_badge').value,stars:document.getElementById('f_stars').value,rev:document.getElementById('f_rev').value||'0',flash,disc:flash?parseInt(document.getElementById('f_disc').value)||0:0,prog:flash?parseInt(document.getElementById('f_prog').value)||0:0,active:document.getElementById('f_active').checked};
   const prods=getProds();
   if(editId){ const idx=prods.findIndex(p=>p.id===parseInt(editId)); if(idx>=0){prods[idx]={...prods[idx],...obj}; saveProds(prods); showToast('✦ Produk berhasil diperbarui!'); resetForm(); apTab('list',document.querySelectorAll('.ap-tab')[0]); return;} }
   obj.id=nextId(); prods.push(obj); saveProds(prods); showToast('✦ Produk baru ditambahkan!'); resetForm(); apTab('list',document.querySelectorAll('.ap-tab')[0]);
 }
 
 function resetForm(){
-  ['f_name','f_price','f_old','f_rev','f_disc','f_prog'].forEach(id=>document.getElementById(id).value='');
+  ['f_name','f_price','f_old','f_rev','f_disc','f_prog','f_photo'].forEach(id=>document.getElementById(id).value=''); document.getElementById('photoPreview').style.display='none';
   document.getElementById('f_emoji').value='📦'; document.getElementById('f_editId').value='';
   document.getElementById('f_flash').checked=false; document.getElementById('f_active').checked=true;
   document.getElementById('f_badge').value='none'; document.getElementById('flashFields').style.display='none';
@@ -1079,8 +1152,93 @@ function buildEmojiPicker(){
 function selEmoji(e){ document.getElementById('f_emoji').value=e; document.querySelectorAll('.em-opt').forEach(el=>el.classList.toggle('on',el.dataset.e===e)); }
 
 /* SETTINGS */
-function loadWAInput(){ const el=document.getElementById('waNum'); if(el) el.value=getWA(); }
+function getSetting(k,def){ return localStorage.getItem('wnj_s_'+k)||def; }
+function saveSetting(k,v){ localStorage.setItem('wnj_s_'+k,v); }
+function getTesti(){ return JSON.parse(localStorage.getItem('wnj_testi')||JSON.stringify([
+  {txt:'Wedding invitation-nya cantik banget, tamunya pada kaget dan suka! High class banget tampilannya, worth it banget!',stars:5,name:'Farah Nabila',prod:'Wedding Invitation Royal Gold',av:'👰'},
+  {txt:'Prompt interior-nya lengkap dan hasilnya keren banget! Langsung bisa buat konten IG estetik. Harganya murah tapi kualitasnya premium.',stars:5,name:'Rinda Ayu',prod:'1000+ Prompt Interior Premium',av:'🏡'},
+  {txt:'Workbook-nya bagus banget, layout premium dan materinya lengkap. Anak-anak suka banget sama flashcard hijaiyah-nya juga.',stars:5,name:'Ummu Fathiyah',prod:'Workbook + Edukasi Anak Premium',av:'🤍'}
+])); }
+function saveTesti(t){ localStorage.setItem('wnj_testi',JSON.stringify(t)); }
+
+function loadWAInput(){
+  const el=document.getElementById('waNum'); if(el) el.value=getWA();
+  const sn=document.getElementById('s_name'); if(sn) sn.value=getSetting('name','WNJ STUDIO');
+  const st=document.getElementById('s_tagline'); if(st) st.value=getSetting('tagline','Premium Digital Store');
+  const sm=document.getElementById('s_marquee'); if(sm) sm.value=getSetting('marquee','Workbook Premium ✦ E-Book Eksklusif ✦ Edukasi Anak ✦ Jasa Web ✦ Wedding Invitation ✦ Jasa Gem 💎 ✦ Prompt Interior ✦ Prompt Fashion Muslimah');
+  const sig=document.getElementById('s_ig'); if(sig) sig.value=getSetting('ig','');
+  const stt=document.getElementById('s_tt'); if(stt) stt.value=getSetting('tt','');
+  renderTestiAdmin();
+}
 function saveWA(){ localStorage.setItem('wnj_wa',document.getElementById('waNum').value.trim()); setWALinks(); showToast('💬 Nomor WhatsApp tersimpan!'); }
+
+function saveStoreInfo(){
+  const name=document.getElementById('s_name').value.trim()||'WNJ STUDIO';
+  const tagline=document.getElementById('s_tagline').value.trim()||'Premium Digital Store';
+  saveSetting('name',name); saveSetting('tagline',tagline);
+  document.querySelectorAll('#storeName,#storeName2').forEach(el=>{if(el)el.textContent=name;});
+  const tEl=document.getElementById('storeTagline'); if(tEl) tEl.textContent=tagline;
+  document.title=name+' — Premium Digital Store';
+  showToast('🏪 Info toko tersimpan!');
+}
+
+function saveMarquee(){
+  const val=document.getElementById('s_marquee').value.trim();
+  saveSetting('marquee',val);
+  renderMarquee();
+  showToast('📢 Marquee tersimpan!');
+}
+
+function renderMarquee(){
+  const val=getSetting('marquee','Workbook Premium ✦ E-Book Eksklusif ✦ Edukasi Anak ✦ Jasa Web ✦ Wedding Invitation ✦ Jasa Gem 💎 ✦ Prompt Interior ✦ Prompt Fashion Muslimah');
+  const parts=val.split('✦').map(s=>s.trim()).filter(Boolean);
+  const html=parts.map(p=>`<span class="mq-i">${p} <span>✦</span></span>`).join('');
+  const el=document.getElementById('mqInner'); if(el) el.innerHTML=html+html;
+}
+
+function saveSosmed(){
+  const ig=document.getElementById('s_ig').value.trim();
+  const tt=document.getElementById('s_tt').value.trim();
+  saveSetting('ig',ig); saveSetting('tt',tt);
+  const igEl=document.getElementById('igLink'); if(igEl&&ig) igEl.href=ig;
+  const ttEl=document.getElementById('ttLink'); if(ttEl&&tt) ttEl.href=tt;
+  showToast('📱 Link sosmed tersimpan!');
+}
+
+function renderTestiAdmin(){
+  const testis=getTesti();
+  const el=document.getElementById('testiAdmin'); if(!el) return;
+  el.innerHTML=testis.map((t,i)=>`
+    <div style="background:var(--k4);border:1px solid rgba(201,168,76,.1);padding:14px;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <strong style="font-size:12px;color:var(--gold);">${t.av} ${t.name}</strong>
+        <button class="ab ab-del" onclick="delTesti(${i})">🗑</button>
+      </div>
+      <input class="ap-in" value="${t.txt}" oninput="editTesti(${i},'txt',this.value)" style="margin-bottom:6px;font-size:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+        <input class="ap-in" value="${t.name}" oninput="editTesti(${i},'name',this.value)" placeholder="Nama" style="font-size:11px;">
+        <input class="ap-in" value="${t.prod}" oninput="editTesti(${i},'prod',this.value)" placeholder="Produk" style="font-size:11px;">
+        <input class="ap-in" value="${t.av}" oninput="editTesti(${i},'av',this.value)" placeholder="Emoji" style="font-size:11px;">
+      </div>
+      <button class="ab-save" onclick="saveTestiData()" style="margin-top:8px;padding:7px 16px;font-size:10px;">💾 Simpan</button>
+    </div>`).join('');
+}
+
+let _testiData=null;
+function editTesti(i,key,val){ if(!_testiData) _testiData=getTesti(); _testiData[i][key]=val; }
+function saveTestiData(){ if(!_testiData) _testiData=getTesti(); saveTesti(_testiData); renderTesti(); showToast('⭐ Testimoni tersimpan!'); }
+function delTesti(i){ const t=getTesti(); t.splice(i,1); saveTesti(t); _testiData=t; renderTestiAdmin(); renderTesti(); showToast('🗑 Testimoni dihapus'); }
+function addTesti(){
+  const t=getTesti();
+  t.push({txt:'Tulis ulasan pelanggan di sini...',stars:5,name:'Nama Pelanggan',prod:'Nama Produk',av:'⭐'});
+  saveTesti(t); _testiData=t; renderTestiAdmin(); renderTesti(); showToast('➕ Testimoni ditambahkan!');
+}
+
+function renderTesti(){
+  const t=getTesti();
+  const el=document.getElementById('testiGrid'); if(!el) return;
+  el.innerHTML=t.map(t=>`<div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">${t.txt}</div><div class="testi-stars">${'★'.repeat(t.stars||5)}</div><div class="testi-aut"><div class="testi-av">${t.av}</div><div><div class="testi-nm">${t.name}</div><div class="testi-pr">${t.prod}</div></div></div></div>`).join('');
+}
 function saveCreds(){ const u=document.getElementById('newU').value.trim(),p=document.getElementById('newP').value; if(!u||!p){showToast('⚠️ Isi username dan password!');return;} localStorage.setItem('wnj_cr',JSON.stringify({u,p})); showToast('🔐 Kredensial tersimpan!'); }
 </script>
 </body>
