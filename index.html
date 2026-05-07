@@ -279,8 +279,9 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
 .ap-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:2px;white-space:nowrap;padding:14px 20px 14px 0;border-right:1px solid rgba(201,168,76,.15);margin-right:8px;}
 .ap-tab{padding:16px 16px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--m);background:transparent;border-bottom:2px solid transparent;white-space:nowrap;transition:color .25s,border-color .25s;}
 .ap-tab:hover,.ap-tab.on{color:var(--gold);border-bottom-color:var(--gold);}
-.ap-view-store{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-left:auto;transition:background .2s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
-.ap-view-store:hover{background:rgba(201,168,76,.22);}
+.ap-foot{padding:16px 20px;border-top:1px solid rgba(201,168,76,.12);flex-shrink:0;}
+.ap-view-store{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--k);padding:15px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:filter .2s,transform .2s;}
+.ap-view-store:hover{filter:brightness(1.08);transform:translateY(-1px);}
 .ap-close{background:transparent;color:var(--m);font-size:22px;padding:14px 0 14px 16px;border-left:1px solid rgba(201,168,76,.1);transition:color .2s;white-space:nowrap;}
 .ap-close:hover{color:var(--red);}
 .ap-body{flex:1;overflow-y:auto;padding:24px 20px;}
@@ -426,7 +427,7 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
     <button class="ap-tab" onclick="apTab('add',this)">➕ Tambah</button>
     <button class="ap-tab" onclick="apTab('flash',this)">⚡ Flash Sale</button>
     <button class="ap-tab" onclick="apTab('set',this)">⚙️ Setting</button>
-    <button class="ap-view-store" onclick="viewStore()">🛍️ Lihat Toko</button><button class="ap-close" onclick="closeAdmin()">✕ Tutup</button>
+    <button class="ap-close" onclick="closeAdmin()">✕ Tutup</button>
   </div>
   <div class="ap-body">
 
@@ -593,6 +594,9 @@ footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60p
       </div>
     </div>
 
+  </div>
+  <div class="ap-foot">
+    <button class="ap-view-store" onclick="viewStore()">🛍️ Lihat Toko — Kembali ke Halaman Utama</button>
   </div>
 </div>
 
