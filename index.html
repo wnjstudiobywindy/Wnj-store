@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WNJ STUDIO — Premium Digital Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96D;--gold-d:#6B5520;--gold-g:rgba(201,168,76,0.12);
+  --k:#060606;--k2:#0E0E0E;--k3:#141414;--k4:#1C1C1C;
+  --w:#F8F3EA;--m:#6B6B5A;--red:#C0392B;--green:#27AE60;--wa:#25D366;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--k);color:var(--w);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{border:none;outline:none;font-family:'DM Sans',sans-serif;cursor:pointer;}
+input,select,textarea{font-family:'DM Sans',sans-serif;outline:none;}
+ul{list-style:none;}
+::selection{background:var(--gold);color:var(--k);}
+
+/* ===== LOADING ===== */
+#ld{position:fixed;inset:0;z-index:9999;background:var(--k);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,visibility .7s;}
+#ld.off{opacity:0;visibility:hidden;pointer-events:none;}
+.ld-logo{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--gold);letter-spacing:6px;animation:ldp 1.6s ease-in-out infinite;}
+.ld-sub{font-size:10px;letter-spacing:5px;color:var(--m);text-transform:uppercase;margin-bottom:48px;}
+@keyframes ldp{0%,100%{opacity:.5;}50%{opacity:1;}}
+.ld-bar-w{width:200px;height:2px;background:rgba(201,168,76,0.1);border-radius:2px;overflow:hidden;}
+.ld-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold-d),var(--gold),var(--gold-l));transition:width .05s linear;}
+.ld-pct{font-size:11px;color:var(--gold);letter-spacing:2px;margin-top:12px;}
+
+/* ===== CURSOR ===== */
+.cur{width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8888;mix-blend-mode:screen;}
+.cur-r{width:32px;height:32px;border:1px solid rgba(201,168,76,0.45);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8887;transition:transform .35s cubic-bezier(.25,.46,.45,.94);}
+
+/* ===== TOPBAR ===== */
+.topbar{background:var(--gold);padding:7px 40px;display:flex;justify-content:space-between;align-items:center;}
+.topbar p{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--k);}
+.topbar-r{display:flex;gap:18px;}
+.topbar-r a{font-size:11px;font-weight:600;color:var(--k);opacity:.7;transition:opacity .2s;}
+.topbar-r a:hover{opacity:1;}
+
+/* ===== NAVBAR ===== */
+nav{position:sticky;top:0;z-index:400;background:rgba(6,6,6,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);}
+.nav-main{display:flex;align-items:center;gap:16px;padding:13px 40px;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;letter-spacing:3px;color:var(--gold);white-space:nowrap;}
+.nav-logo small{display:block;font-size:9px;letter-spacing:4px;color:var(--m);font-family:'DM Sans',sans-serif;font-weight:400;margin-top:-3px;}
+.nav-search{flex:1;display:flex;align-items:center;border:1px solid rgba(201,168,76,.2);background:var(--k3);max-width:560px;transition:border-color .3s;}
+.nav-search:focus-within{border-color:var(--gold);}
+.nav-search input{flex:1;background:transparent;border:none;padding:10px 16px;color:var(--w);font-size:13px;}
+.nav-search input::placeholder{color:var(--m);}
+.nav-search button{background:var(--gold);padding:10px 18px;color:var(--k);font-size:15px;}
+.nav-icons{display:flex;gap:4px;margin-left:auto;}
+.nic{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 12px;background:transparent;color:var(--w);font-size:10px;letter-spacing:.5px;opacity:.75;transition:opacity .2s,color .2s;position:relative;}
+.nic:hover{opacity:1;color:var(--gold);}
+.nic .ico{font-size:19px;}
+.cbadge{position:absolute;top:3px;right:8px;background:var(--red);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.catnav{background:var(--k2);border-bottom:1px solid rgba(201,168,76,.07);padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none;}
+.catnav::-webkit-scrollbar{display:none;}
+.catnav a{padding:11px 18px;font-size:11px;letter-spacing:.8px;font-weight:500;white-space:nowrap;color:var(--m);border-bottom:2px solid transparent;transition:color .25s,border-color .25s;}
+.catnav a:hover,.catnav a.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;}
+.hslider{display:flex;transition:transform .7s cubic-bezier(.77,0,.175,1);}
+.hslide{min-width:100%;min-height:440px;display:flex;align-items:center;position:relative;overflow:hidden;}
+.hslide:nth-child(1){background:linear-gradient(135deg,#0f0c02,#1a1500,#0a0800);}
+.hslide:nth-child(2){background:linear-gradient(135deg,#020c0a,#001a14,#000e09);}
+.hslide:nth-child(3){background:linear-gradient(135deg,#0a0215,#150a20,#060010);}
+.hslide-bg{position:absolute;inset:0;font-size:240px;display:flex;align-items:center;justify-content:center;opacity:.04;user-select:none;}
+.hslide-c{position:relative;z-index:2;padding:56px 60px;max-width:600px;}
+.htag{display:inline-block;border:1px solid var(--gold-d);color:var(--gold);font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
+.hslide-c h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,58px);font-weight:700;line-height:1.05;color:var(--w);margin-bottom:14px;}
+.hslide-c h1 em{color:var(--gold);font-style:italic;}
+.hslide-c p{font-size:13px;color:var(--m);line-height:1.8;margin-bottom:28px;max-width:400px;}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap;}
+.hvis{position:absolute;right:60px;top:50%;transform:translateY(-50%);font-size:150px;filter:drop-shadow(0 0 36px rgba(201,168,76,.2));animation:flt 4s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateY(-50%);}50%{transform:translateY(calc(-50% - 14px));}}
+.hdots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10;}
+.dot{width:22px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;transition:background .3s,width .3s;}
+.dot.on{background:var(--gold);width:36px;}
+.harr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.2);color:var(--gold);width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:10;transition:background .25s;}
+.harr:hover{background:rgba(201,168,76,.28);}
+.hprev{left:16px;}.hnext{right:16px;}
+
+/* ===== BTN ===== */
+.bgold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--k);padding:12px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:inline-block;transition:transform .3s,box-shadow .3s;box-shadow:0 0 20px rgba(201,168,76,.25);}
+.bgold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.4);}
+.bghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--w);padding:12px 32px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;display:inline-block;transition:border-color .3s,color .3s;}
+.bghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ===== MARQUEE ===== */
+.mq{background:var(--gold);overflow:hidden;padding:9px 0;}
+.mq-in{display:flex;width:max-content;animation:mqs 22s linear infinite;}
+.mq-i{white-space:nowrap;padding:0 36px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--k);}
+.mq-i span{opacity:.45;margin:0 10px;}
+@keyframes mqs{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ===== STATS ===== */
+.stats{background:var(--k4);border-top:1px solid rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.08);padding:0 40px;}
+.stats-in{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(201,168,76,.06);gap:1px;}
+.sbox{background:var(--k4);padding:36px 28px;text-align:center;}
+.snum{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:var(--gold);line-height:1;}
+.slbl{font-size:9px;letter-spacing:2.5px;color:var(--m);text-transform:uppercase;margin-top:7px;}
+
+/* ===== SECTION ===== */
+.sec{padding:56px 40px;}
+.con{max-width:1300px;margin:0 auto;}
+.sec-lbl{font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-lbl::before{content:'';width:22px;height:1px;background:var(--gold);}
+.sec-ttl{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,40px);font-weight:600;color:var(--w);line-height:1.1;}
+.sec-ttl em{color:var(--gold);font-style:italic;}
+.sec-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;}
+.see-all{font-size:11px;letter-spacing:1.5px;color:var(--gold);font-weight:600;text-transform:uppercase;display:flex;align-items:center;gap:5px;transition:gap .2s;}
+.see-all:hover{gap:9px;}
+
+/* ===== CAT GRID ===== */
+.catg{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;}
+.catb{background:var(--k3);border:1px solid rgba(201,168,76,.08);padding:18px 10px;text-align:center;transition:border-color .3s,transform .3s;position:relative;overflow:hidden;}
+.catb::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s;}
+.catb:hover{border-color:rgba(201,168,76,.4);transform:translateY(-3px);}
+.catb:hover::after{transform:scaleX(1);}
+.catb-ico{font-size:28px;margin-bottom:8px;display:block;transition:transform .3s;}
+.catb:hover .catb-ico{transform:scale(1.15);}
+.catb-nm{font-size:10px;font-weight:600;color:var(--w);letter-spacing:.4px;line-height:1.3;}
+.catb-ct{font-size:9px;color:var(--m);margin-top:3px;}
+
+/* ===== FLASH SALE ===== */
+.fl-sec{background:var(--k2);}
+.fl-hd{display:flex;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;}
+.fl-ttl{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);}
+.fl-cd{display:flex;align-items:center;gap:7px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);padding:8px 14px;}
+.cdbox{background:var(--k3);border:1px solid rgba(201,168,76,.18);padding:5px 9px;text-align:center;min-width:40px;}
+.cdnum{font-family:'Playfair Display',serif;font-size:22px;color:var(--w);line-height:1;font-weight:600;}
+.cdlbl{font-size:8px;color:var(--m);letter-spacing:1.5px;text-transform:uppercase;}
+.cdsep{color:var(--gold);font-size:18px;font-weight:300;margin-top:-3px;}
+.fl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+
+/* ===== PRODUCT CARD ===== */
+.pc{background:var(--k3);border:1px solid rgba(201,168,76,.08);position:relative;overflow:hidden;transition:border-color .3s,transform .4s,box-shadow .4s;}
+.pc:hover{border-color:rgba(201,168,76,.38);transform:translateY(-5px);box-shadow:0 14px 44px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.1);}
+.pc-img{width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--k4),var(--k2));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pc-emo{font-size:68px;filter:drop-shadow(0 0 14px rgba(201,168,76,.18));transition:transform .5s,filter .5s;}
+.pc:hover .pc-emo{transform:scale(1.12);filter:drop-shadow(0 0 26px rgba(201,168,76,.45));}
+.pc-ov{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
+.pc:hover .pc-ov{opacity:1;}
+.pc-wa{background:var(--wa);color:#fff;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;transform:translateY(8px);transition:transform .3s;}
+.pc:hover .pc-wa{transform:translateY(0);}
+.bdg{position:absolute;top:9px;left:9px;z-index:2;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;}
+.bdg-bs{background:var(--gold);color:var(--k);}
+.bdg-nw{border:1px solid var(--gold);color:var(--gold);}
+.bdg-ht{background:var(--red);color:#fff;}
+.bdg-ek{background:var(--gold-d);color:var(--gold-l);}
+.bdg-tr{background:rgba(201,168,76,.2);color:var(--gold);}
+.bdg-js{border:1px solid rgba(255,255,255,.2);color:var(--m);}
+.disc-tag{position:absolute;top:9px;right:9px;z-index:2;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;}
+.pc-body{padding:13px;}
+.pc-cat{font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+.pc-nm{font-size:13px;font-weight:500;color:var(--w);line-height:1.35;margin-bottom:7px;min-height:34px;}
+.pc-stars{color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:7px;}
+.pc-stars span{color:var(--m);font-size:10px;margin-left:3px;}
+.pc-ft{display:flex;justify-content:space-between;align-items:flex-end;}
+.pc-price{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold);}
+.pc-old{font-size:10px;color:var(--m);text-decoration:line-through;margin-top:1px;}
+.pc-add{width:30px;height:30px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);color:var(--gold);font-size:17px;display:flex;align-items:center;justify-content:center;transition:background .25s,transform .2s;}
+.pc-add:hover{background:var(--gold);color:var(--k);transform:scale(1.1);}
+.fp-prog{margin-top:9px;}
+.fp-txt{font-size:9px;color:var(--m);letter-spacing:1px;margin-bottom:3px;}
+.fp-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.fp-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:2px;}
+
+/* ===== PROD GRID ===== */
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.pgrid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+/* ===== WHY ===== */
+.why{background:var(--k2);}
+.why-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:44px;background:rgba(201,168,76,.08);}
+.why-b{background:var(--k2);padding:38px 28px;position:relative;overflow:hidden;transition:background .3s;}
+.why-b:hover{background:var(--k3);}
+.why-n{position:absolute;top:14px;right:18px;font-family:'Playfair Display',serif;font-size:60px;font-weight:700;color:rgba(201,168,76,.05);line-height:1;}
+.why-ico{font-size:32px;margin-bottom:18px;display:block;}
+.why-ttl{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--w);margin-bottom:9px;}
+.why-desc{font-size:13px;color:var(--m);line-height:1.85;font-weight:300;}
+
+/* ===== TESTI ===== */
+.testi-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+.testi-b{background:var(--k3);border:1px solid rgba(201,168,76,.08);padding:28px;transition:border-color .3s,transform .3s;}
+.testi-b:hover{border-color:rgba(201,168,76,.28);transform:translateY(-3px);}
+.testi-q{font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);line-height:.65;opacity:.32;margin-bottom:12px;}
+.testi-txt{font-size:13px;color:var(--w);line-height:1.85;font-weight:300;margin-bottom:16px;}
+.testi-stars{color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:14px;}
+.testi-aut{display:flex;align-items:center;gap:11px;}
+.testi-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),var(--gold));display:flex;align-items:center;justify-content:center;font-size:17px;}
+.testi-nm{font-size:12px;font-weight:600;color:var(--w);}
+.testi-pr{font-size:10px;color:var(--gold);margin-top:1px;}
+
+/* ===== CTA ===== */
+.cta{background:linear-gradient(135deg,#0d0a00,#1a1400,#0d0a00);border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15);text-align:center;padding:90px 40px;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 50%,rgba(201,168,76,.07),transparent);}
+.cta-in{position:relative;z-index:1;}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,60px);font-weight:700;color:var(--w);line-height:1.05;margin-bottom:16px;}
+.cta h2 em{color:var(--gold);font-style:italic;}
+.cta p{font-size:13px;color:var(--m);max-width:400px;margin:0 auto 36px;line-height:1.8;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+/* ===== CART DRAWER ===== */
+.cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:700;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;}
+.cart-ov.on{opacity:1;visibility:visible;}
+.cart-dr{position:fixed;top:0;right:0;height:100%;width:360px;max-width:100vw;background:var(--k2);border-left:1px solid rgba(201,168,76,.15);z-index:701;transform:translateX(100%);transition:transform .4s cubic-bezier(.77,0,.175,1);display:flex;flex-direction:column;}
+.cart-ov.on .cart-dr{transform:translateX(0);}
+.cart-hd{display:flex;justify-content:space-between;align-items:center;padding:20px 22px 18px;border-bottom:1px solid rgba(201,168,76,.1);}
+.cart-hd h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);}
+.cart-cls{background:transparent;color:var(--m);font-size:20px;transition:color .2s;}
+.cart-cls:hover{color:var(--w);}
+.cart-bd{flex:1;overflow-y:auto;padding:18px 22px;scrollbar-width:thin;scrollbar-color:var(--gold-d) transparent;}
+.cart-emp{text-align:center;padding:50px 0;font-size:13px;color:var(--m);}
+.cart-emp .eico{font-size:52px;display:block;opacity:.35;margin-bottom:12px;}
+.citem{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.citem-img{width:60px;height:60px;background:var(--k4);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.citem-info{flex:1;}
+.citem-nm{font-size:13px;font-weight:500;color:var(--w);margin-bottom:5px;line-height:1.3;}
+.citem-pr{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);}
+.citem-qty{display:flex;align-items:center;gap:8px;margin-top:7px;}
+.qbtn{width:24px;height:24px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold);font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.qbtn:hover{background:rgba(201,168,76,.25);}
+.qnum{font-size:13px;color:var(--w);min-width:18px;text-align:center;}
+.cdel{background:transparent;color:var(--m);font-size:13px;margin-left:auto;transition:color .2s;}
+.cdel:hover{color:var(--red);}
+.cart-ft{padding:18px 22px;border-top:1px solid rgba(201,168,76,.1);}
+.cart-tot{display:flex;justify-content:space-between;margin-bottom:5px;}
+.cart-tot span:first-child{font-size:12px;color:var(--m);}
+.cart-tot span:last-child{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);}
+.cart-note{font-size:11px;color:var(--m);margin-bottom:14px;line-height:1.6;}
+.cwa-btn{width:100%;background:var(--wa);color:#fff;padding:14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:filter .2s;}
+.cwa-btn:hover{filter:brightness(1.1);}
+.cclr-btn{width:100%;margin-top:8px;background:transparent;border:1px solid rgba(201,168,76,.2);color:var(--m);padding:11px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:border-color .2s,color .2s;}
+.cclr-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--k3);border:1px solid rgba(201,168,76,.22);color:var(--w);padding:12px 24px;font-size:13px;z-index:9000;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== WA FLOAT ===== */
+.wa-fl{position:fixed;bottom:80px;right:22px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--wa);box-shadow:0 4px 20px rgba(37,211,102,.4);display:flex;align-items:center;justify-content:center;font-size:24px;animation:wap 2s ease-in-out infinite;transition:transform .2s;}
+.wa-fl:hover{transform:scale(1.1);}
+@keyframes wap{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4);}50%{box-shadow:0 4px 36px rgba(37,211,102,.7);}}
+.bktop{position:fixed;bottom:22px;right:22px;z-index:600;width:42px;height:42px;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.28);color:var(--gold);font-size:17px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s,transform .2s,background .2s;}
+.bktop.on{opacity:1;}
+.bktop:hover{background:var(--gold);color:var(--k);}
+
+/* ===== FOOTER ===== */
+footer{background:var(--k2);border-top:1px solid rgba(201,168,76,.1);padding:60px 40px 32px;}
+.ft-g{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+.ft-logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--gold);letter-spacing:3px;display:block;margin-bottom:5px;}
+.ft-tag{font-size:10px;letter-spacing:3px;color:var(--gold);opacity:.6;margin-bottom:16px;}
+.ft-desc{font-size:13px;color:var(--m);line-height:1.9;max-width:240px;margin-bottom:20px;}
+.ft-soc{display:flex;gap:8px;}
+.soc{width:34px;height:34px;border:1px solid rgba(201,168,76,.18);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .25s,border-color .25s;}
+.soc:hover{background:rgba(201,168,76,.1);border-color:var(--gold);}
+.ft-col h4{font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;font-weight:600;}
+.ft-col li{margin-bottom:10px;}
+.ft-col a{font-size:13px;color:var(--m);transition:color .25s;}
+.ft-col a:hover{color:var(--gold);}
+.ft-bot{border-top:1px solid rgba(201,168,76,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.ft-bot p{font-size:11px;color:var(--m);}
+.ft-bot span{color:var(--gold);}
+.pays{display:flex;gap:6px;flex-wrap:wrap;}
+.pay{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:3px 9px;font-size:10px;color:var(--m);font-weight:600;border-radius:3px;}
+
+/* ===== ADMIN PANEL ===== */
+#adminPanel{position:fixed;inset:0;z-index:2000;background:var(--k);display:none;flex-direction:column;}
+#adminPanel.on{display:flex;}
+.ap-topbar{background:var(--k2);border-bottom:1px solid rgba(201,168,76,.15);padding:0 20px;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.ap-topbar::-webkit-scrollbar{display:none;}
+.ap-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:2px;white-space:nowrap;padding:14px 20px 14px 0;border-right:1px solid rgba(201,168,76,.15);margin-right:8px;}
+.ap-tab{padding:16px 16px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--m);background:transparent;border-bottom:2px solid transparent;white-space:nowrap;transition:color .25s,border-color .25s;}
+.ap-tab:hover,.ap-tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.ap-close{margin-left:auto;background:transparent;color:var(--m);font-size:22px;padding:14px 0 14px 16px;border-left:1px solid rgba(201,168,76,.1);transition:color .2s;white-space:nowrap;}
+.ap-close:hover{color:var(--red);}
+.ap-body{flex:1;overflow-y:auto;padding:24px 20px;}
+
+/* ADMIN PAGES */
+.ap-page{display:none;}
+.ap-page.on{display:block;}
+.ap-sec-ttl{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--w);margin-bottom:20px;}
+.ap-sec-ttl em{color:var(--gold);font-style:italic;}
+
+/* PRODUCT LIST */
+.ap-prod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.ap-prod-item{background:var(--k3);border:1px solid rgba(201,168,76,.08);padding:14px;display:flex;align-items:center;gap:12px;transition:border-color .25s;}
+.ap-prod-item:hover{border-color:rgba(201,168,76,.25);}
+.ap-prod-emo{font-size:28px;flex-shrink:0;}
+.ap-prod-info{flex:1;min-width:0;}
+.ap-prod-nm{font-size:13px;font-weight:500;color:var(--w);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ap-prod-meta{font-size:11px;color:var(--m);}
+.ap-prod-meta span{color:var(--gold);}
+.ap-prod-acts{display:flex;gap:6px;flex-shrink:0;}
+.ab{padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.ab-edit{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);color:var(--gold);}
+.ab-edit:hover{background:rgba(201,168,76,.22);}
+.ab-del{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.22);color:var(--red);}
+.ab-del:hover{background:rgba(192,57,43,.22);}
+.ab-save{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--k);padding:12px 28px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:filter .2s;}
+.ab-save:hover{filter:brightness(1.08);}
+.ab-cancel{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--m);padding:12px 20px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:border-color .2s,color .2s;}
+.ab-cancel:hover{border-color:rgba(255,255,255,.3);color:var(--w);}
+
+/* FORM */
+.ap-form{display:flex;flex-direction:column;gap:14px;}
+.ap-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.ap-fg{display:flex;flex-direction:column;gap:6px;}
+.ap-fg.full{grid-column:1/-1;}
+.ap-lbl{font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:600;}
+.ap-in{background:var(--k4);border:1px solid rgba(201,168,76,.15);color:var(--w);padding:11px 13px;font-size:13px;width:100%;transition:border-color .3s;}
+.ap-in:focus{border-color:var(--gold);}
+.ap-sel{background:var(--k4);border:1px solid rgba(201,168,76,.15);color:var(--w);padding:11px 13px;font-size:13px;width:100%;transition:border-color .3s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.ap-sel:focus{border-color:var(--gold);}
+.ap-sel option{background:var(--k3);}
+.emoji-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.em-opt{width:38px;height:38px;background:var(--k4);border:1px solid rgba(201,168,76,.12);font-size:19px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:border-color .2s,background .2s;}
+.em-opt.on,.em-opt:hover{border-color:var(--gold);background:rgba(201,168,76,.1);}
+.ap-btns{display:flex;gap:10px;margin-top:8px;}
+.ap-toggle-row{display:flex;gap:20px;flex-wrap:wrap;}
+.tgl-wrap{display:flex;align-items:center;gap:8px;}
+.tgl{position:relative;width:40px;height:22px;}
+.tgl input{opacity:0;width:0;height:0;}
+.tgl-sl{position:absolute;inset:0;background:var(--k4);border:1px solid rgba(201,168,76,.18);border-radius:22px;transition:.3s;}
+.tgl-sl::before{content:'';position:absolute;width:14px;height:14px;background:var(--m);border-radius:50%;left:3px;top:3px;transition:.3s;}
+.tgl input:checked+.tgl-sl{background:rgba(201,168,76,.18);border-color:var(--gold);}
+.tgl input:checked+.tgl-sl::before{transform:translateX(18px);background:var(--gold);}
+.tgl-lbl{font-size:11px;color:var(--m);}
+
+/* SETTINGS */
+.ap-setting-block{background:var(--k3);border:1px solid rgba(201,168,76,.1);padding:20px;margin-bottom:16px;}
+.ap-setting-block h3{font-size:14px;font-weight:600;color:var(--w);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.wa-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
+.wa-row .ap-in{flex:1;min-width:200px;}
+.info-tip{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);padding:14px 16px;font-size:12px;color:var(--m);line-height:1.8;margin-top:12px;}
+.info-tip strong{color:var(--gold);}
+
+/* ===== ADMIN TRIGGER BUTTON ===== */
+.admin-trigger{
+  position:fixed;bottom:22px;left:22px;z-index:600;
+  background:var(--k3);border:1px solid rgba(201,168,76,.25);
+  color:var(--gold);padding:9px 16px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+  transition:background .2s,border-color .2s;opacity:.7;
+}
+.admin-trigger:hover{background:rgba(201,168,76,.1);border-color:var(--gold);opacity:1;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){
+  .topbar,.sec,.stats,.cta,footer{padding-left:24px;padding-right:24px;}
+  .nav-main,.catnav{padding-left:24px;padding-right:24px;}
+  .catg{grid-template-columns:repeat(4,1fr);}
+  .pgrid{grid-template-columns:repeat(3,1fr);}
+  .fl-grid{grid-template-columns:repeat(3,1fr);}
+  .why-g{grid-template-columns:repeat(2,1fr);}
+  .testi-g{grid-template-columns:repeat(2,1fr);}
+  .ft-g{grid-template-columns:1fr 1fr;gap:28px;}
+  .stats-in{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:700px){
+  .topbar{display:none;}
+  .nav-main{padding:10px 14px;gap:8px;}
+  .nav-logo small{display:none;}
+  .catg{grid-template-columns:repeat(4,1fr);gap:7px;}
+  .pgrid,.fl-grid{grid-template-columns:repeat(2,1fr);gap:9px;}
+  .why-g{grid-template-columns:1fr;}
+  .testi-g{grid-template-columns:1fr;}
+  .hvis{display:none;}
+  .hslide-c{padding:36px 20px;}
+  .sec{padding:40px 14px;}
+  .stats,.cta,footer{padding-left:14px;padding-right:14px;}
+  .ft-g{grid-template-columns:1fr;gap:24px;}
+  .ft-bot{flex-direction:column;align-items:flex-start;}
+  .ap-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="ld">
+  <div class="ld-logo">WNJ</div>
+  <div class="ld-sub">Studio · Premium Digital</div>
+  <div class="ld-bar-w"><div class="ld-bar" id="ldBar"></div></div>
+  <div class="ld-pct" id="ldPct">0%</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span>✦</span><span id="toastMsg"></span></div>
+
+<!-- CART DRAWER -->
+<div class="cart-ov" id="cartOv" onclick="closeCartEv(event)">
+  <div class="cart-dr">
+    <div class="cart-hd"><h3>🛍️ Keranjang</h3><button class="cart-cls" onclick="closeCart()">✕</button></div>
+    <div class="cart-bd" id="cartBd">
+      <div class="cart-emp" id="cartEmp"><span class="eico">🛒</span><p>Keranjang masih kosong</p><p style="font-size:11px;margin-top:5px;">Yuk tambah produk favoritmu!</p></div>
+      <div id="cartItems"></div>
+    </div>
+    <div class="cart-ft" id="cartFt" style="display:none;">
+      <div class="cart-tot"><span>Total Belanja</span><span id="cartTot">Rp 0</span></div>
+      <p class="cart-note">Lanjut pesan via WhatsApp — admin kami siap bantu proses pembayaran! 🥰</p>
+      <button class="cwa-btn" onclick="checkoutWA()">💬 Pesan via WhatsApp</button>
+      <button class="cclr-btn" onclick="clearCart()">Kosongkan Keranjang</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="adminPanel">
+  <div class="ap-topbar">
+    <div class="ap-logo">WNJ ADMIN</div>
+    <button class="ap-tab on" onclick="apTab('list',this)">📦 Produk</button>
+    <button class="ap-tab" onclick="apTab('add',this)">➕ Tambah</button>
+    <button class="ap-tab" onclick="apTab('flash',this)">⚡ Flash Sale</button>
+    <button class="ap-tab" onclick="apTab('set',this)">⚙️ Setting</button>
+    <button class="ap-close" onclick="closeAdmin()">✕ Tutup</button>
+  </div>
+  <div class="ap-body">
+
+    <!-- PRODUCT LIST -->
+    <div class="ap-page on" id="ap-list">
+      <div class="ap-sec-ttl">Semua <em>Produk</em></div>
+      <input class="ap-in" id="apSearch" placeholder="🔍 Cari produk..." oninput="renderApList()" style="margin-bottom:14px;">
+      <div class="ap-prod-list" id="apProdList"></div>
+    </div>
+
+    <!-- ADD / EDIT FORM -->
+    <div class="ap-page" id="ap-add">
+      <div class="ap-sec-ttl" id="apFormTitle">Tambah <em>Produk Baru</em></div>
+      <div class="ap-form">
+        <div class="ap-row">
+          <div class="ap-fg full">
+            <label class="ap-lbl">Nama Produk *</label>
+            <input class="ap-in" id="f_name" placeholder="Nama produk kamu...">
+          </div>
+        </div>
+        <div class="ap-row">
+          <div class="ap-fg">
+            <label class="ap-lbl">Kategori *</label>
+            <select class="ap-sel" id="f_cat">
+              <option value="Workbook">📓 Workbook</option>
+              <option value="E-Book">📘 E-Book</option>
+              <option value="Edukasi Anak">🧒 Edukasi Anak</option>
+              <option value="Jasa Web">💻 Jasa Web / Template</option>
+              <option value="Wedding">💌 Wedding Invitation</option>
+              <option value="Jasa Gem">💎 Jasa Gem</option>
+              <option value="Prompt AI">🤖 Prompt AI</option>
+            </select>
+          </div>
+          <div class="ap-fg">
+            <label class="ap-lbl">Badge</label>
+            <select class="ap-sel" id="f_badge">
+              <option value="none">Tidak ada</option>
+              <option value="bs">⭐ Best Seller</option>
+              <option value="nw">🆕 New</option>
+              <option value="ht">🔥 Hot</option>
+              <option value="ek">💎 Eksklusif</option>
+              <option value="tr">📈 Trending</option>
+              <option value="js">🛠 Jasa</option>
+            </select>
+          </div>
+        </div>
+        <div class="ap-row">
+          <div class="ap-fg">
+            <label class="ap-lbl">Harga Jual (Rp) *</label>
+            <input type="number" class="ap-in" id="f_price" placeholder="contoh: 45000">
+          </div>
+          <div class="ap-fg">
+            <label class="ap-lbl">Harga Coret (Rp)</label>
+            <input type="number" class="ap-in" id="f_old" placeholder="contoh: 150000">
+          </div>
+        </div>
+        <div class="ap-row">
+          <div class="ap-fg">
+            <label class="ap-lbl">Rating</label>
+            <select class="ap-sel" id="f_stars">
+              <option value="5">★★★★★</option>
+              <option value="4.5">★★★★½</option>
+              <option value="4">★★★★☆</option>
+            </select>
+          </div>
+          <div class="ap-fg">
+            <label class="ap-lbl">Jumlah Ulasan</label>
+            <input class="ap-in" id="f_rev" placeholder="contoh: 1.2k">
+          </div>
+        </div>
+        <div class="ap-fg">
+          <label class="ap-lbl">Emoji / Icon Produk</label>
+          <div class="emoji-row" id="emojiRow"></div>
+          <input type="hidden" id="f_emoji" value="📦">
+        </div>
+        <div class="ap-fg">
+          <label class="ap-lbl">Opsi</label>
+          <div class="ap-toggle-row">
+            <label class="tgl-wrap"><label class="tgl"><input type="checkbox" id="f_flash" onchange="toggleFlashFields()"><span class="tgl-sl"></span></label><span class="tgl-lbl">Flash Sale</span></label>
+            <label class="tgl-wrap"><label class="tgl"><input type="checkbox" id="f_active" checked><span class="tgl-sl"></span></label><span class="tgl-lbl">Produk Aktif</span></label>
+          </div>
+        </div>
+        <div class="ap-row" id="flashFields" style="display:none;">
+          <div class="ap-fg">
+            <label class="ap-lbl">Diskon Flash Sale (%)</label>
+            <input type="number" class="ap-in" id="f_disc" placeholder="contoh: 70">
+          </div>
+          <div class="ap-fg">
+            <label class="ap-lbl">Progress Terjual (%)</label>
+            <input type="number" class="ap-in" id="f_prog" placeholder="contoh: 85">
+          </div>
+        </div>
+        <input type="hidden" id="f_editId" value="">
+        <div class="ap-btns">
+          <button class="ab-save" onclick="saveProduct()">💾 Simpan</button>
+          <button class="ab-cancel" onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASH SALE LIST -->
+    <div class="ap-page" id="ap-flash">
+      <div class="ap-sec-ttl">⚡ Produk <em>Flash Sale</em></div>
+      <div class="ap-prod-list" id="apFlashList"></div>
+      <div class="info-tip">Aktifkan toggle <strong>Flash Sale</strong> saat tambah/edit produk untuk menampilkan di bagian Flash Sale.</div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="ap-page" id="ap-set">
+      <div class="ap-sec-ttl">⚙️ <em>Pengaturan</em></div>
+      <div class="ap-setting-block">
+        <h3>💬 Nomor WhatsApp</h3>
+        <div class="wa-row">
+          <input class="ap-in" id="waNum" placeholder="628xxxxxxxxxx (tanpa + atau spasi)">
+          <button class="ab-save" onclick="saveWA()" style="padding:11px 20px;">💾 Simpan</button>
+        </div>
+        <div class="info-tip">Format: <strong>628xxxxxxxxxx</strong> — Semua pesanan akan dikirim ke nomor ini via WhatsApp.</div>
+      </div>
+      <div class="ap-setting-block">
+        <h3>🔐 Ganti Password Admin</h3>
+        <div class="ap-row">
+          <div class="ap-fg"><label class="ap-lbl">Username Baru</label><input class="ap-in" id="newU" placeholder="Username"></div>
+          <div class="ap-fg"><label class="ap-lbl">Password Baru</label><input type="password" class="ap-in" id="newP" placeholder="Password baru"></div>
+        </div>
+        <div class="ap-btns" style="margin-top:10px;"><button class="ab-save" onclick="saveCreds()">💾 Simpan Kredensial</button></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== STORE ===== -->
+<div id="store">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <p>✦ Pengiriman File Instan · Garansi 7 Hari · Support 24/7 ✦</p>
+  <div class="topbar-r">
+    <a href="#why">Tentang Kami</a>
+    <a href="#testi">Review</a>
+    <a id="waTopLink" href="#">Kontak WA</a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-main">
+    <a href="#" class="nav-logo">WNJ STUDIO<small>Premium Digital Store</small></a>
+    <div class="nav-search">
+      <input type="text" id="searchInput" placeholder="Cari produk premium..." oninput="searchProducts()">
+      <button onclick="searchProducts()">🔍</button>
+    </div>
+    <div class="nav-icons">
+      <button class="nic" onclick="openAdmin()"><span class="ico">⚙️</span>Admin</button>
+      <button class="nic"><span class="ico">🤍</span>Wishlist</button>
+      <button class="nic" onclick="openCart()" style="position:relative;">
+        <span class="ico">🛍️</span>Keranjang
+        <div class="cbadge" id="cbadge" style="display:none;">0</div>
+      </button>
+    </div>
+  </div>
+  <div class="catnav">
+    <a href="#" class="active">Beranda</a>
+    <a href="#sec-Workbook">Workbook</a>
+    <a href="#sec-E-Book">E-Book</a>
+    <a href="#sec-Edukasi Anak">Edukasi Anak</a>
+    <a href="#sec-Jasa Web">Jasa Web</a>
+    <a href="#sec-Wedding">Wedding Inv</a>
+    <a href="#sec-Jasa Gem">Jasa Gem 💎</a>
+    <a href="#sec-Prompt AI">Prompt AI</a>
+    <a href="#flashSec">Flash Sale 🔥</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hslider" id="hslider">
+    <div class="hslide">
+      <div class="hslide-bg">📚</div>
+      <div class="hslide-c">
+        <div class="htag">✦ Koleksi Terbaru</div>
+        <h1>Workbook &amp; <em>E-Book Premium</em> Eksklusif</h1>
+        <p>Panduan lengkap berkualitas tinggi untuk mendorong bisnis dan karier kamu ke level berikutnya.</p>
+        <div class="hbtns"><a href="#produk" class="bgold">Belanja Sekarang</a><a id="waHero" href="#" class="bghost" target="_blank">Chat Admin</a></div>
+      </div>
+      <div class="hvis">📚</div>
+    </div>
+    <div class="hslide">
+      <div class="hslide-bg">💌</div>
+      <div class="hslide-c">
+        <div class="htag">✦ Most Popular</div>
+        <h1>Wedding Invitation <em>High Class</em> Digital</h1>
+        <p>Undangan digital premium yang elegan dan memukau setiap tamu undangan kamu.</p>
+        <div class="hbtns"><a href="#sec-Wedding" class="bgold">Lihat Koleksi</a><a id="waHero2" href="#" class="bghost" target="_blank">Custom Order</a></div>
+      </div>
+      <div class="hvis">💌</div>
+    </div>
+    <div class="hslide">
+      <div class="hslide-bg">💎</div>
+      <div class="hslide-c">
+        <div class="htag">✦ Jasa Eksklusif</div>
+        <h1>Jasa <em>Gem 💎</em> &amp; Template Web Premium</h1>
+        <p>Layanan pembuatan website dan gem premium dengan kualitas terbaik dan harga terjangkau.</p>
+        <div class="hbtns"><a href="#sec-Jasa Gem" class="bgold">Pesan Sekarang</a><a id="waHero3" href="#" class="bghost" target="_blank">Konsultasi Gratis</a></div>
+      </div>
+      <div class="hvis">💎</div>
+    </div>
+  </div>
+  <button class="harr hprev" onclick="slideGo(-1)">‹</button>
+  <button class="harr hnext" onclick="slideGo(1)">›</button>
+  <div class="hdots" id="hdots"></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq"><div class="mq-in">
+  <div class="mq-i">Workbook Premium <span>✦</span> E-Book Eksklusif <span>✦</span> Edukasi Anak <span>✦</span> Jasa Web <span>✦</span> Wedding Invitation <span>✦</span> Jasa Gem 💎 <span>✦</span> Prompt Interior <span>✦</span> Prompt Fashion Muslimah <span>✦</span></div>
+  <div class="mq-i">Workbook Premium <span>✦</span> E-Book Eksklusif <span>✦</span> Edukasi Anak <span>✦</span> Jasa Web <span>✦</span> Wedding Invitation <span>✦</span> Jasa Gem 💎 <span>✦</span> Prompt Interior <span>✦</span> Prompt Fashion Muslimah <span>✦</span></div>
+</div></div>
+
+<!-- STATS -->
+<div class="stats"><div class="stats-in">
+  <div class="sbox"><div class="snum">8K+</div><div class="slbl">Pelanggan Puas</div></div>
+  <div class="sbox"><div class="snum" id="statProd">0</div><div class="slbl">Produk Digital</div></div>
+  <div class="sbox"><div class="snum">99%</div><div class="slbl">Rating Positif</div></div>
+  <div class="sbox"><div class="snum">24/7</div><div class="slbl">Support Aktif</div></div>
+</div></div>
+
+<!-- CATEGORIES -->
+<section class="sec">
+  <div class="con">
+    <div class="sec-hd"><div><div class="sec-lbl">Jelajahi</div><div class="sec-ttl">Semua <em>Kategori</em></div></div></div>
+    <div class="catg">
+      <a href="#sec-Workbook" class="catb"><span class="catb-ico">📓</span><div class="catb-nm">Workbook</div></a>
+      <a href="#sec-E-Book" class="catb"><span class="catb-ico">📘</span><div class="catb-nm">E-Book</div></a>
+      <a href="#sec-Edukasi Anak" class="catb"><span class="catb-ico">🧒</span><div class="catb-nm">Edukasi Anak</div></a>
+      <a href="#sec-Jasa Web" class="catb"><span class="catb-ico">💻</span><div class="catb-nm">Jasa Web</div></a>
+      <a href="#sec-Wedding" class="catb"><span class="catb-ico">💌</span><div class="catb-nm">Wedding Inv</div></a>
+      <a href="#sec-Jasa Gem" class="catb"><span class="catb-ico">💎</span><div class="catb-nm">Jasa Gem</div></a>
+      <a href="#sec-Prompt AI" class="catb"><span class="catb-ico">🏡</span><div class="catb-nm">Prompt Interior</div></a>
+      <a href="#sec-Prompt AI" class="catb"><span class="catb-ico">🧕</span><div class="catb-nm">Prompt Muslimah</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- FLASH SALE -->
+<section class="sec fl-sec" id="flashSec">
+  <div class="con">
+    <div class="fl-hd">
+      <div class="fl-ttl">⚡ Flash Sale</div>
+      <div class="fl-cd">
+        <div class="cdbox"><div class="cdnum" id="cdh">09</div><div class="cdlbl">Jam</div></div>
+        <div class="cdsep">:</div>
+        <div class="cdbox"><div class="cdnum" id="cdm">44</div><div class="cdlbl">Min</div></div>
+        <div class="cdsep">:</div>
+        <div class="cdbox"><div class="cdnum" id="cds">00</div><div class="cdlbl">Det</div></div>
+      </div>
+    </div>
+    <div class="fl-grid" id="flashGrid"></div>
+  </div>
+</section>
+
+<!-- ALL PRODUCTS (by category) -->
+<div id="produk">
+  <div id="searchResults" style="display:none;">
+    <section class="sec"><div class="con">
+      <div class="sec-hd"><div><div class="sec-lbl">Hasil Pencarian</div><div class="sec-ttl" id="searchTitle">Produk</div></div></div>
+      <div class="pgrid" id="searchGrid"></div>
+    </div></section>
+  </div>
+  <div id="catSections"></div>
+</div>
+
+<!-- WHY -->
+<section class="sec why" id="why">
+  <div class="con">
+    <div class="sec-lbl">Kenapa WNJ Studio?</div>
+    <div class="sec-ttl">Keunggulan <em>Kami</em></div>
+    <div class="why-g">
+      <div class="why-b"><div class="why-n">01</div><span class="why-ico">⚡</span><div class="why-ttl">Pengiriman Instan</div><div class="why-desc">File langsung kamu terima setelah konfirmasi pembayaran, dalam hitungan detik, 24 jam sehari.</div></div>
+      <div class="why-b"><div class="why-n">02</div><span class="why-ico">💎</span><div class="why-ttl">Kualitas Premium</div><div class="why-desc">Setiap produk dikurasi ketat oleh tim WNJ Studio. Standar profesional, harga terjangkau.</div></div>
+      <div class="why-b"><div class="why-n">03</div><span class="why-ico">🛡️</span><div class="why-ttl">Garansi 7 Hari</div><div class="why-desc">Tidak puas? Kami kasih garansi uang kembali 7 hari tanpa syarat. Kepuasan kamu prioritas kami.</div></div>
+      <div class="why-b"><div class="why-n">04</div><span class="why-ico">💬</span><div class="why-ttl">Support 24/7</div><div class="why-desc">Tim kami siap bantu kapan pun via WhatsApp. Respon cepat, ramah, dan siap membantu.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTI -->
+<section class="sec" id="testi">
+  <div class="con">
+    <div class="sec-lbl">Review Pembeli</div>
+    <div class="sec-ttl">Kata Mereka <em>Tentang WNJ Studio</em></div>
+    <div class="testi-g">
+      <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Wedding invitation-nya cantik banget, tamunya pada kaget dan suka! High class banget tampilannya, worth it banget! Seller responsif dan fast respon. Recommended 100%!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">👰</div><div><div class="testi-nm">Farah Nabila</div><div class="testi-pr">Wedding Invitation Royal Gold</div></div></div></div>
+      <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Prompt interior-nya lengkap dan hasilnya keren banget! Langsung bisa buat konten IG estetik. Harganya murah tapi kualitasnya premium. Udah beli 3x disini!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">🏡</div><div><div class="testi-nm">Rinda Ayu</div><div class="testi-pr">1000+ Prompt Interior Premium</div></div></div></div>
+      <div class="testi-b"><div class="testi-q">"</div><div class="testi-txt">Workbook-nya bagus banget, layout premium dan materinya lengkap. Anak-anak suka banget sama flashcard hijaiyah-nya juga. Seller WNJ Studio memang the best!</div><div class="testi-stars">★★★★★</div><div class="testi-aut"><div class="testi-av">🤍</div><div><div class="testi-nm">Ummu Fathiyah</div><div class="testi-pr">Workbook + Edukasi Anak Premium</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta"><div class="cta-in">
+  <h2>Ada Yang Mau <em>Dicustom</em><br>atau Ditanyakan?</h2>
+  <p>Konsultasi gratis via WhatsApp. Admin WNJ Studio siap bantu kamu menemukan produk yang tepat! 🥰</p>
+  <div class="cta-btns"><a id="waCtaBtn" href="#" target="_blank" class="bgold">💬 Chat WhatsApp Sekarang</a><a href="#produk" class="bghost">Lihat Semua Produk</a></div>
+</div></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-g">
+    <div><span class="ft-logo">WNJ STUDIO</span><div class="ft-tag">Premium Digital Store</div><p class="ft-desc">Toko produk digital premium terpercaya. Workbook, e-book, edukasi anak, wedding invitation, jasa web, gem, dan prompt AI terbaik.</p><div class="ft-soc"><a href="#" class="soc">📸</a><a href="#" class="soc">📘</a><a id="waFt" href="#" class="soc" target="_blank">💬</a><a href="#" class="soc">🎵</a></div></div>
+    <div class="ft-col"><h4>Produk</h4><ul><li><a href="#sec-Workbook">Workbook Premium</a></li><li><a href="#sec-E-Book">E-Book Eksklusif</a></li><li><a href="#sec-Edukasi Anak">Edukasi Anak</a></li><li><a href="#sec-Wedding">Wedding Invitation</a></li><li><a href="#sec-Jasa Gem">Jasa Gem 💎</a></li><li><a href="#sec-Prompt AI">Prompt AI</a></li></ul></div>
+    <div class="ft-col"><h4>Info</h4><ul><li><a href="#">Cara Pembelian</a></li><li><a href="#">Kebijakan Refund</a></li><li><a href="#">Syarat & Ketentuan</a></li><li><a href="#">FAQ</a></li></ul></div>
+    <div class="ft-col"><h4>Kontak</h4><ul><li><a id="waFtLink" href="#" target="_blank">💬 WhatsApp Admin</a></li><li><a href="#">📸 Instagram</a></li><li><a href="#">🎵 TikTok Shop</a></li></ul></div>
+  </div>
+  <div class="ft-bot">
+    <p>© 2025 <span>WNJ STUDIO</span>. Semua hak dilindungi. Made with 🤍</p>
+    <div class="pays"><span class="pay">DANA</span><span class="pay">OVO</span><span class="pay">GoPay</span><span class="pay">BCA</span><span class="pay">Mandiri</span><span class="pay">BSI</span></div>
+  </div>
+</footer>
+
+</div><!-- end #store -->
+
+<a id="waFloat" href="#" target="_blank" class="wa-fl">💬</a>
+<button class="bktop" id="bktop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="admin-trigger" onclick="openAdmin()">⚙️ Admin</button>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div id="loginModal" style="position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--k3);border:1px solid rgba(201,168,76,.2);padding:44px 36px;width:340px;max-width:92vw;text-align:center;">
+    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);letter-spacing:3px;margin-bottom:4px;">WNJ</div>
+    <div style="font-size:9px;letter-spacing:3px;color:var(--m);text-transform:uppercase;margin-bottom:30px;">Admin Login</div>
+    <input class="ap-in" id="lu" placeholder="Username" style="margin-bottom:10px;" autocomplete="off">
+    <input type="password" class="ap-in" id="lp" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()" style="margin-bottom:14px;">
+    <button class="ab-save" style="width:100%;" onclick="doLogin()">Masuk</button>
+    <div id="lerr" style="font-size:12px;color:var(--red);margin-top:10px;min-height:16px;"></div>
+    <div style="font-size:11px;color:var(--m);margin-top:14px;line-height:1.6;">Default: <span style="color:var(--gold);">admin</span> / <span style="color:var(--gold);">wnj2025</span></div>
+  </div>
+</div>
+
+<script>
+/* ====== DATA ====== */
+const EMOJIS=['📓','📘','📗','📙','📚','🧒','👧','🌙','💻','🖥️','📱','💌','👰','💍','👑','💎','🤖','🏡','🛋️','🏠','🧕','👗','✨','🌸','🎀','🌺','💰','📊','🎓','🎨','📝','🛍️','🤲','💡','⭐','🎁','🖋️','🎬','🎵','🌟','🏆','🌿'];
+
+const DEFAULT_PRODS=[
+  {id:1,name:'Workbook Goal Setting 2025 Premium',cat:'Workbook',emoji:'📓',price:39000,old:120000,badge:'bs',stars:'5',rev:'890',flash:false,disc:0,prog:0,active:true},
+  {id:2,name:'Workbook Journaling Islami Harian',cat:'Workbook',emoji:'🤲',price:35000,old:99000,badge:'nw',stars:'5',rev:'640',flash:false,disc:0,prog:0,active:true},
+  {id:3,name:'E-Book Finansial Planning untuk Muslimah',cat:'E-Book',emoji:'💰',price:49000,old:150000,badge:'none',stars:'5',rev:'1.1k',flash:false,disc:0,prog:0,active:true},
+  {id:4,name:'Flashcard Hijaiyah & Doa Harian Premium',cat:'Edukasi Anak',emoji:'🌙',price:29000,old:85000,badge:'tr',stars:'5',rev:'2.3k',flash:false,disc:0,prog:0,active:true},
+  {id:5,name:'Jasa Landing Page Premium',cat:'Jasa Web',emoji:'💻',price:299000,old:750000,badge:'js',stars:'5',rev:'340',flash:false,disc:0,prog:0,active:true},
+  {id:6,name:'Wedding Invitation Royal Motif Full Music',cat:'Wedding',emoji:'👑',price:89000,old:300000,badge:'ek',stars:'5',rev:'730',flash:false,disc:0,prog:0,active:true},
+  {id:7,name:'Jasa Buat Gem Premium Custom Design',cat:'Jasa Gem',emoji:'💎',price:150000,old:450000,badge:'js',stars:'5',rev:'210',flash:false,disc:0,prog:0,active:true},
+  {id:8,name:'500+ Prompt Fashion Muslimah AI',cat:'Prompt AI',emoji:'🧕',price:25000,old:89000,badge:'ht',stars:'5',rev:'3.2k',flash:true,disc:75,prog:94,active:true},
+  {id:9,name:'Prompt Interior Scandinavian & Minimalis',cat:'Prompt AI',emoji:'🛋️',price:22000,old:75000,badge:'nw',stars:'5',rev:'870',flash:true,disc:70,prog:80,active:true},
+  {id:10,name:'Wedding Invitation Elegant Gold High Class',cat:'Wedding',emoji:'💌',price:75000,old:250000,badge:'bs',stars:'5',rev:'980',flash:true,disc:70,prog:92,active:true},
+];
+
+function getProds(){ return JSON.parse(localStorage.getItem('wnj_p')||JSON.stringify(DEFAULT_PRODS)); }
+function saveProds(p){ localStorage.setItem('wnj_p',JSON.stringify(p)); }
+function getWA(){ return localStorage.getItem('wnj_wa')||'6281234567890'; }
+function getCreds(){ return JSON.parse(localStorage.getItem('wnj_cr')||'{"u":"admin","p":"wnj2025"}'); }
+function nextId(){ const p=getProds(); return p.length?Math.max(...p.map(x=>x.id))+1:1; }
+
+/* ====== LOADING ====== */
+(function(){
+  let v=0; const bar=document.getElementById('ldBar'),pct=document.getElementById('ldPct'),el=document.getElementById('ld');
+  const iv=setInterval(()=>{
+    v+=Math.random()*18; if(v>=100){v=100;clearInterval(iv);setTimeout(()=>{el.classList.add('off');initStore();},400);}
+    bar.style.width=v+'%'; pct.textContent=Math.floor(v)+'%';
+  },100);
+})();
+
+/* ====== CURSOR ====== */
+const curEl=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;curEl.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(anim);})();
+
+/* ====== HERO ====== */
+let si=0;
+const slides=()=>document.querySelectorAll('.hslide');
+function slideGo(d){ si=(si+d+slides().length)%slides().length; document.getElementById('hslider').style.transform=`translateX(-${si*100}%)`; document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===si)); }
+function buildDots(){ const c=document.getElementById('hdots'); c.innerHTML=''; slides().forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' on':''); d.onclick=()=>slideGo(i-si); c.appendChild(d); }); }
+setInterval(()=>slideGo(1),5500);
+
+/* ====== COUNTDOWN ====== */
+let cdt=9*3600+44*60;
+setInterval(()=>{ cdt=Math.max(0,cdt-1); const h=Math.floor(cdt/3600),m=Math.floor((cdt%3600)/60),s=cdt%60; document.getElementById('cdh').textContent=String(h).padStart(2,'0'); document.getElementById('cdm').textContent=String(m).padStart(2,'0'); document.getElementById('cds').textContent=String(s).padStart(2,'0'); },1000);
+
+/* ====== WA LINKS ====== */
+function setWALinks(){
+  const wa=getWA();
+  const url=n=>`https://wa.me/${wa}?text=${encodeURIComponent(n)}`;
+  const links=[
+    ['waTopLink',url('Halo WNJ Studio! Saya ingin konsultasi produk 🥰')],
+    ['waHero',url('Halo WNJ Studio! Saya ingin chat dengan admin 🥰')],
+    ['waHero2',url('Halo WNJ Studio! Saya tertarik custom Wedding Invitation 💌')],
+    ['waHero3',url('Halo WNJ Studio! Saya ingin konsultasi Jasa Gem/Web 💎')],
+    ['waCtaBtn',url('Halo WNJ Studio! Saya ingin konsultasi produk 🥰')],
+    ['waFloat',url('Halo WNJ Studio! 🌟')],
+    ['waFt',url('Halo WNJ Studio! 🌟')],
+    ['waFtLink',url('Halo WNJ Studio! 🌟')],
+  ];
+  links.forEach(([id,href])=>{ const el=document.getElementById(id); if(el) el.href=href; });
+}
+
+/* ====== STORE INIT ====== */
+function initStore(){
+  buildDots();
+  setWALinks();
+  renderFlash();
+  renderCatSections();
+  updateStatProd();
+  initScrollReveal();
+  buildEmojiPicker();
+  loadWAInput();
+}
+
+function updateStatProd(){ document.getElementById('statProd').textContent=getProds().filter(p=>p.active).length+'+'; }
+
+/* ====== BADGE ====== */
+const BDGMAP={bs:'bdg-bs',nw:'bdg-nw',ht:'bdg-ht',ek:'bdg-ek',tr:'bdg-tr',js:'bdg-js',none:''};
+const BDGTXT={bs:'Best Seller',nw:'New',ht:'Hot 🔥',ek:'Eksklusif',tr:'Trending',js:'Jasa',none:''};
+const STARS={5:'★★★★★','4.5':'★★★★½',4:'★★★★☆'};
+
+/* ====== RENDER CARD ====== */
+function card(p, showProg=false){
+  const wa=getWA();
+  const waMsg=encodeURIComponent(`Halo WNJ Studio! 🌟 Saya ingin memesan:\n\n📦 ${p.name}\n💰 Rp ${p.price.toLocaleString('id-ID')}\n\nMohon info cara pemesanan dan pembayarannya ya, terima kasih! 🥰`);
+  const bdgHtml=p.badge&&p.badge!=='none'?`<div class="bdg ${BDGMAP[p.badge]}">${BDGTXT[p.badge]}</div>`:'';
+  const discHtml=showProg&&p.disc?`<div class="disc-tag">-${p.disc}%</div>`:'';
+  const progHtml=showProg?`<div class="fp-prog"><div class="fp-txt">Terjual ${p.prog}%</div><div class="fp-bar"><div class="fp-fill" style="width:${p.prog}%"></div></div></div>`:'';
+  const oldHtml=p.old?`<div class="pc-old">Rp ${p.old.toLocaleString('id-ID')}</div>`:'';
+  return `<div class="pc">
+    ${bdgHtml}${discHtml}
+    <div class="pc-img">
+      <div class="pc-emo">${p.emoji}</div>
+      <div class="pc-ov"><button class="pc-wa" onclick="window.open('https://wa.me/${wa}?text=${waMsg}','_blank')">💬 Pesan via WA</button></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-cat">${p.cat}</div>
+      <div class="pc-nm">${p.name}</div>
+      <div class="pc-stars">${STARS[p.stars]||'★★★★★'} <span>(${p.rev})</span></div>
+      <div class="pc-ft">
+        <div><div class="pc-price">Rp ${p.price.toLocaleString('id-ID')}</div>${oldHtml}</div>
+        <button class="pc-add" onclick="addCart(${p.id})">+</button>
+      </div>
+      ${progHtml}
+    </div>
+  </div>`;
+}
+
+/* ====== FLASH ====== */
+function renderFlash(){
+  const fl=getProds().filter(p=>p.flash&&p.active);
+  document.getElementById('flashGrid').innerHTML=fl.length?fl.map(p=>card(p,true)).join(''):`<div style="color:var(--m);font-size:13px;padding:20px 0;">Belum ada produk Flash Sale.</div>`;
+}
+
+/* ====== CAT SECTIONS ====== */
+function renderCatSections(){
+  const cats=['Workbook','E-Book','Edukasi Anak','Jasa Web','Wedding','Jasa Gem','Prompt AI'];
+  const all=getProds().filter(p=>p.active);
+  let html='';
+  cats.forEach(cat=>{
+    const prods=all.filter(p=>p.cat===cat);
+    if(!prods.length) return;
+    html+=`<section class="sec" id="sec-${cat}"><div class="con">
+      <div class="sec-hd"><div><div class="sec-lbl">${cat}</div><div class="sec-ttl">Produk <em>${cat}</em></div></div></div>
+      <div class="pgrid">${prods.map(p=>card(p)).join('')}</div>
+    </div></section>`;
+  });
+  document.getElementById('catSections').innerHTML=html;
+}
+
+/* ====== SEARCH ====== */
+function searchProducts(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const sr=document.getElementById('searchResults');
+  const cs=document.getElementById('catSections');
+  if(!q){ sr.style.display='none'; cs.style.display=''; return; }
+  const res=getProds().filter(p=>p.active&&(p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+  sr.style.display=''; cs.style.display='none';
+  document.getElementById('searchTitle').textContent=`"${q}" — ${res.length} produk`;
+  document.getElementById('searchGrid').innerHTML=res.length?res.map(p=>card(p)).join(''):`<div style="color:var(--m);font-size:14px;padding:20px 0;">Produk tidak ditemukan 😔</div>`;
+}
+
+/* ====== CART ====== */
+let cart=[];
+function openCart(){ document.getElementById('cartOv').classList.add('on'); renderCart(); }
+function closeCart(){ document.getElementById('cartOv').classList.remove('on'); }
+function closeCartEv(e){ if(e.target===document.getElementById('cartOv')) closeCart(); }
+
+function addCart(id){
+  const p=getProds().find(x=>x.id===id); if(!p) return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex) ex.qty++; else cart.push({id:p.id,name:p.name,price:p.price,emoji:p.emoji,qty:1});
+  updateBadge(); showToast(`✦ ${p.name.substring(0,22)}... ditambahkan!`);
+}
+function remCart(idx){ cart.splice(idx,1); renderCart(); updateBadge(); }
+function changeQty(idx,d){ cart[idx].qty=Math.max(1,cart[idx].qty+d); renderCart(); updateBadge(); }
+function clearCart(){ cart=[]; renderCart(); updateBadge(); }
+function updateBadge(){ const t=cart.reduce((s,i)=>s+i.qty,0); const b=document.getElementById('cbadge'); b.style.display=t?'flex':'none'; b.textContent=t; }
+
+function renderCart(){
+  const bd=document.getElementById('cartItems'),emp=document.getElementById('cartEmp'),ft=document.getElementById('cartFt');
+  if(!cart.length){ emp.style.display='block'; bd.innerHTML=''; ft.style.display='none'; return; }
+  emp.style.display='none'; ft.style.display='block';
+  bd.innerHTML=cart.map((it,i)=>`<div class="citem"><div class="citem-img">${it.emoji}</div><div class="citem-info"><div class="citem-nm">${it.name}</div><div class="citem-pr">Rp ${it.price.toLocaleString('id-ID')}</div><div class="citem-qty"><button class="qbtn" onclick="changeQty(${i},-1)">−</button><span class="qnum">${it.qty}</span><button class="qbtn" onclick="changeQty(${i},1)">+</button><button class="cdel" onclick="remCart(${i})">🗑</button></div></div></div>`).join('');
+  const tot=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('cartTot').textContent='Rp '+tot.toLocaleString('id-ID');
+}
+
+function checkoutWA(){
+  if(!cart.length) return;
+  const wa=getWA(); let msg='Halo WNJ Studio! 🌟 Saya ingin memesan:\n\n';
+  cart.forEach((it,i)=>{ msg+=`${i+1}. ${it.name}\n   ${it.qty}x Rp ${it.price.toLocaleString('id-ID')} = Rp ${(it.price*it.qty).toLocaleString('id-ID')}\n\n`; });
+  msg+='Total: Rp '+cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString('id-ID')+'\n\nMohon info cara pembayarannya, terima kasih! 🥰';
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* ====== TOAST ====== */
+function showToast(msg){ const t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2600); }
+
+/* ====== BACK TOP / SCROLL ====== */
+window.addEventListener('scroll',()=>document.getElementById('bktop').classList.toggle('on',scrollY>400));
+
+/* ====== SCROLL REVEAL ====== */
+function initScrollReveal(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}}),{threshold:.06});
+  setTimeout(()=>{
+    document.querySelectorAll('.pc,.catb,.why-b,.testi-b,.sbox').forEach(el=>{
+      el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity .5s ease,transform .5s ease';obs.observe(el);
+    });
+  },100);
+}
+
+/* ====== ADMIN ====== */
+let loggedIn=false;
+function openAdmin(){
+  if(!loggedIn){ const m=document.getElementById('loginModal'); m.style.display='flex'; document.getElementById('lu').focus(); }
+  else{ document.getElementById('adminPanel').classList.add('on'); renderApList(); renderFlashList(); }
+}
+function closeAdmin(){ document.getElementById('adminPanel').classList.remove('on'); reloadStore(); }
+function reloadStore(){ renderFlash(); renderCatSections(); setWALinks(); updateStatProd(); setTimeout(initScrollReveal,200); }
+
+function doLogin(){
+  const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value;
+  const cr=getCreds();
+  if(u===cr.u&&p===cr.p){ loggedIn=true; document.getElementById('loginModal').style.display='none'; document.getElementById('lu').value=''; document.getElementById('lp').value=''; document.getElementById('adminPanel').classList.add('on'); renderApList(); renderFlashList(); }
+  else{ document.getElementById('lerr').textContent='❌ Username atau password salah!'; }
+}
+document.getElementById('loginModal').addEventListener('click',function(e){if(e.target===this)this.style.display='none';});
+
+/* TABS */
+function apTab(pg,btn){ document.querySelectorAll('.ap-page').forEach(p=>p.classList.remove('on')); document.getElementById('ap-'+pg).classList.add('on'); document.querySelectorAll('.ap-tab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); if(pg==='list') renderApList(); if(pg==='flash') renderFlashList(); }
+
+/* PRODUCT LIST */
+function renderApList(){
+  const q=document.getElementById('apSearch')?.value.toLowerCase()||'';
+  let prods=getProds(); if(q) prods=prods.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+  document.getElementById('apProdList').innerHTML=prods.length?prods.map(p=>`
+    <div class="ap-prod-item">
+      <div class="ap-prod-emo">${p.emoji}</div>
+      <div class="ap-prod-info">
+        <div class="ap-prod-nm">${p.name}</div>
+        <div class="ap-prod-meta">${p.cat} · <span>Rp ${p.price.toLocaleString('id-ID')}</span>${p.old?' · <s style="color:var(--m)">Rp '+p.old.toLocaleString('id-ID')+'</s>':''} · ${p.active?'<span style="color:var(--green)">✅ Aktif</span>':'<span style="color:var(--red)">❌ Nonaktif</span>'}</div>
+      </div>
+      <div class="ap-prod-acts">
+        <button class="ab ab-edit" onclick="editProd(${p.id})">✏️ Edit</button>
+        <button class="ab ab-del" onclick="delProd(${p.id})">🗑</button>
+      </div>
+    </div>`).join(''):`<div style="color:var(--m);font-size:13px;padding:20px 0;">Belum ada produk.</div>`;
+}
+
+function renderFlashList(){
+  const prods=getProds().filter(p=>p.flash);
+  document.getElementById('apFlashList').innerHTML=prods.length?prods.map(p=>`
+    <div class="ap-prod-item">
+      <div class="ap-prod-emo">${p.emoji}</div>
+      <div class="ap-prod-info">
+        <div class="ap-prod-nm">${p.name}</div>
+        <div class="ap-prod-meta"><span>Rp ${p.price.toLocaleString('id-ID')}</span> · Diskon ${p.disc}% · Terjual ${p.prog}%</div>
+      </div>
+      <div class="ap-prod-acts"><button class="ab ab-edit" onclick="editProd(${p.id})">✏️ Edit</button></div>
+    </div>`).join(''):`<div style="color:var(--m);font-size:13px;padding:20px 0;">Belum ada produk Flash Sale.</div>`;
+}
+
+/* EDIT */
+function editProd(id){
+  const p=getProds().find(x=>x.id===id); if(!p) return;
+  document.getElementById('apFormTitle').innerHTML='Edit <em>Produk</em>';
+  document.getElementById('f_editId').value=id;
+  document.getElementById('f_name').value=p.name;
+  document.getElementById('f_cat').value=p.cat;
+  document.getElementById('f_badge').value=p.badge||'none';
+  document.getElementById('f_price').value=p.price;
+  document.getElementById('f_old').value=p.old||'';
+  document.getElementById('f_stars').value=p.stars;
+  document.getElementById('f_rev').value=p.rev;
+  document.getElementById('f_emoji').value=p.emoji;
+  document.getElementById('f_flash').checked=p.flash;
+  document.getElementById('f_active').checked=p.active;
+  document.getElementById('f_disc').value=p.disc||'';
+  document.getElementById('f_prog').value=p.prog||'';
+  document.getElementById('flashFields').style.display=p.flash?'grid':'none';
+  document.querySelectorAll('.em-opt').forEach(e=>e.classList.toggle('on',e.dataset.e===p.emoji));
+  apTab('add',document.querySelectorAll('.ap-tab')[1]);
+}
+
+function delProd(id){ if(!confirm('Hapus produk ini?')) return; saveProds(getProds().filter(p=>p.id!==id)); renderApList(); showToast('🗑 Produk dihapus'); }
+
+/* SAVE */
+function saveProduct(){
+  const name=document.getElementById('f_name').value.trim();
+  const price=parseInt(document.getElementById('f_price').value);
+  if(!name){ showToast('⚠️ Nama produk wajib diisi!'); return; }
+  if(!price){ showToast('⚠️ Harga wajib diisi!'); return; }
+  const flash=document.getElementById('f_flash').checked;
+  const editId=document.getElementById('f_editId').value;
+  const obj={name,cat:document.getElementById('f_cat').value,emoji:document.getElementById('f_emoji').value||'📦',price,old:parseInt(document.getElementById('f_old').value)||0,badge:document.getElementById('f_badge').value,stars:document.getElementById('f_stars').value,rev:document.getElementById('f_rev').value||'0',flash,disc:flash?parseInt(document.getElementById('f_disc').value)||0:0,prog:flash?parseInt(document.getElementById('f_prog').value)||0:0,active:document.getElementById('f_active').checked};
+  const prods=getProds();
+  if(editId){ const idx=prods.findIndex(p=>p.id===parseInt(editId)); if(idx>=0){prods[idx]={...prods[idx],...obj}; saveProds(prods); showToast('✦ Produk berhasil diperbarui!'); resetForm(); apTab('list',document.querySelectorAll('.ap-tab')[0]); return;} }
+  obj.id=nextId(); prods.push(obj); saveProds(prods); showToast('✦ Produk baru ditambahkan!'); resetForm(); apTab('list',document.querySelectorAll('.ap-tab')[0]);
+}
+
+function resetForm(){
+  ['f_name','f_price','f_old','f_rev','f_disc','f_prog'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f_emoji').value='📦'; document.getElementById('f_editId').value='';
+  document.getElementById('f_flash').checked=false; document.getElementById('f_active').checked=true;
+  document.getElementById('f_badge').value='none'; document.getElementById('flashFields').style.display='none';
+  document.getElementById('apFormTitle').innerHTML='Tambah <em>Produk Baru</em>';
+  document.querySelectorAll('.em-opt').forEach(e=>e.classList.remove('on'));
+}
+
+function toggleFlashFields(){ document.getElementById('flashFields').style.display=document.getElementById('f_flash').checked?'grid':'none'; }
+
+/* EMOJI PICKER */
+function buildEmojiPicker(){
+  document.getElementById('emojiRow').innerHTML=EMOJIS.map(e=>`<div class="em-opt" data-e="${e}" onclick="selEmoji('${e}')">${e}</div>`).join('');
+}
+function selEmoji(e){ document.getElementById('f_emoji').value=e; document.querySelectorAll('.em-opt').forEach(el=>el.classList.toggle('on',el.dataset.e===e)); }
+
+/* SETTINGS */
+function loadWAInput(){ const el=document.getElementById('waNum'); if(el) el.value=getWA(); }
+function saveWA(){ localStorage.setItem('wnj_wa',document.getElementById('waNum').value.trim()); setWALinks(); showToast('💬 Nomor WhatsApp tersimpan!'); }
+function saveCreds(){ const u=document.getElementById('newU').value.trim(),p=document.getElementById('newP').value; if(!u||!p){showToast('⚠️ Isi username dan password!');return;} localStorage.setItem('wnj_cr',JSON.stringify({u,p})); showToast('🔐 Kredensial tersimpan!'); }
+</script>
+</body>
+</html>
